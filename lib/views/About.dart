@@ -39,7 +39,10 @@ class About extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Image.asset('assets/images/logo.jpg', width: 50, errorBuilder: (BuildContext _context, Object _, StackTrace? _stackTrace) => Icon(Icons.apps, size: 50)),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Image.asset('assets/images/logo.jpg', width: 50, errorBuilder: (BuildContext _context, Object _, StackTrace? _stackTrace) => Icon(Icons.apps, size: 50)),
+                      ),
                       FutureBuilder(future: AppConfig.packageInfo, builder: (BuildContext _context, AsyncSnapshot<PackageInfo> _packageInfo) => Text('${_packageInfo.data?.version} (${_packageInfo.data?.buildNumber})'))
                     ],
                   ),
