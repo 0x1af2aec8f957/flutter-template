@@ -5,6 +5,8 @@ import '../utils/common.dart';
 // extension ProcessButton on RawMaterialButton {}
 class ProcessButton extends StatefulWidget {
   final Future<void> Function()? onPressed;
+  final EdgeInsetsGeometry margin;
+  final double widthFactor;
   final ButtonStyle style; // default: ElevatedButton.styleFrom(shape: StadiumBorder()/* CircleBorder() | RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)) |  BeveledRectangleBorder(borderRadius: BorderRadius.circular(12)*/)
   final Widget child;
 
@@ -12,6 +14,8 @@ class ProcessButton extends StatefulWidget {
     super.key,
     ButtonStyle? style,
     this.onPressed,
+    this.margin = EdgeInsets.zero,
+    this.widthFactor = 1,
     this.child = const SizedBox.shrink(),
   }): style = style ?? ElevatedButton.styleFrom();
 
@@ -38,14 +42,20 @@ class _ProcessButton extends State<ProcessButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => isLoading ? null : handleClick(), // 为 null 时，按钮的样式为 MaterialState.disabled
-      style: widget.style,
-      // 去按钮背景颜色的反色
-      child: isLoading ? CircularProgressIndicator(
-        color: widget.style.backgroundColor?.resolve({MaterialState.disabled})?.invert,
-        strokeWidth: 3
-      ): widget.child
+    return FractionallySizedBox(
+      widthFactor: widget.widthFactor,
+      child: Padding(
+        padding: widget.margin,
+        child: ElevatedButton(
+          onPressed: () => isLoading ? null : handleClick(), // 为 null 时，按钮的样式为 MaterialState.disabled
+          style: widget.style,
+          // 去按钮背景颜色的反色
+          child: isLoading ? CircularProgressIndicator(
+            color: widget.style.backgroundColor?.resolve({MaterialState.disabled})?.invert,
+            strokeWidth: 3
+          ): widget.child
+        ),
+      ),
     );
   }
 }
