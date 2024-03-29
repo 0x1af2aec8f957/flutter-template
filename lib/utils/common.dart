@@ -17,6 +17,7 @@ extension ColorHelper on Color { /// NOTE: 普通类的扩展可直接调用: Co
 
 extension FutureHelper<T> on Future<T> { /// NOTE: 抽象实例的扩展，需要使用 FutureHelper 调用: FutureHelper.doWhileByDuration
   static Future<void> doWhileByDuration(FutureOr<bool> Function() action, {Duration duration = Durations.extralong4}) => Future.doWhile(() => Future.sync(action).then((isDone) => isDone ? Future.delayed(duration, () => true) : Future.value(false))); // doWhile 的 duration 版本，间隔 duration 执行 action 直到 action 返回 false
+  static Future<T?> sync<T>(FutureOr<T> Function()? action) => action == null ? Future<T?>.value(null) : Future<T>.sync(action); // 跟 Future.sync 一样，但是入参允许为 null
 }
 
 extension ClipboardHelper on Clipboard {
