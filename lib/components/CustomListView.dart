@@ -134,8 +134,8 @@ class _CustomListView<T> extends State<CustomListView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.data.isEmpty/*  && isLoading */) return Center(child: CircularProgressIndicator()); // 加载中
     if (widget.data.isEmpty && !hasMoreData) return NoData(); // 暂无数据
+    if (widget.data.isEmpty/*  && isLoading */) return Center(child: CircularProgressIndicator()); // 加载中
 
     if (widget.hasRefresh) return RefreshIndicator( // 下拉刷新
       color: widget.color,
