@@ -126,6 +126,7 @@
 15. [web服务](https://pub.dev/packages/shelf)，模板中涉及启动服务的地方都依赖此库
 16. [web服务的静态资源中间件](https://pub.dev/packages/shelf_static)
 17. [数据管理](https://pub.dev/packages/provider)，模板中的数据和视图层均为分开状态
+18. [本地数据库](https://pub.dev/packages/isar)，本地sql依赖该库
 
 #### 模板中独有的技术栈
 

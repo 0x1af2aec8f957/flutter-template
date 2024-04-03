@@ -76,10 +76,14 @@ dependencies:
   flutter_webrtc: ^0.9.48 # WebRTC: https://github.com/flutter-webrtc/flutter-webrtc
   scrollable_positioned_list: ^0.3.8 # 支持滚动定位的 ListView: https://github.com/google/flutter.widgets/tree/master/packages/scrollable_positioned_list
   lpinyin: ^2.0.3 # 汉子转拼音
+  isar: ^3.1.0+1 # 数据库: https://isar.dev/zh/tutorials/quickstart.html
+  isar_flutter_libs: ^3.1.0+1
 
 dev_dependencies:
+  build_runner: ^2.4.9
   flutter_test:
     sdk: flutter
+  isar_generator: ^3.1.0+1
   pedantic: ^1.11.1
 
 
