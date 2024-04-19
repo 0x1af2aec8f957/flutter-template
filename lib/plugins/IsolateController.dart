@@ -79,7 +79,7 @@ class IsolateController {
   /// 使用示例:
   final bool isInitLoading = false;
   void log(){
-    print('test: ${isInitLoading}');
+    debugPrint('test: ${isInitLoading}');
   }
 
   final IsolateController isolateController = IsolateController((outside, inside) { // 不能调用 主 Isolate 的代码
