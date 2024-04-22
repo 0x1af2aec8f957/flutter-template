@@ -40,6 +40,7 @@ class App extends StatefulWidget {
 }
 
 class _App extends State<App> {
+  late final FocusScopeNode focusScope = FocusScope.of(context);
   late final GlobalModel globalModel = context.read<GlobalModel>(); // 按需初始化全局 model
 
   // DateTime lastTime;
@@ -101,10 +102,8 @@ class _App extends State<App> {
                     body: GestureDetector( // 处理安卓键盘收起问题
                       behavior: HitTestBehavior.translucent,
                       onTap: () {
-                        final FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-                          FocusManager.instance.primaryFocus!.unfocus();
-                        }
+                        if (focusScope.hasPrimaryFocus || focusScope.focusedChild == null) return;
+                        FocusManager.instance.primaryFocus!.unfocus();
                       },
                       child: child,
                     ),
