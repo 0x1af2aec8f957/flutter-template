@@ -33,13 +33,19 @@ class LeftDrawer extends StatelessWidget {
                           child: const FlutterLogo(),
                         ),
                         TextButton(
-                            child: Text('关于'),
-                            style: TextButton.styleFrom(textStyle: const TextStyle(color: Colors.blue)),
-                            onPressed: () {
-                              //导航到新路由
-                              // Navigator.pushNamed(context, "about", arguments: <String, String>{'info': 'about'});
-                              context.push("/about");
-                            }),
+                          child: Text('存储空间'),
+                          style: TextButton.styleFrom(textStyle: const TextStyle(color: Colors.blue)),
+                          onPressed: () {
+                            context.push("/storage");
+                          }
+                        ),
+                        TextButton(
+                          child: Text('关于'),
+                          style: TextButton.styleFrom(textStyle: const TextStyle(color: Colors.blue)),
+                          onPressed: () {
+                            context.push("/about");
+                          }
+                        ),
                       ],
                     ),
                   ]),

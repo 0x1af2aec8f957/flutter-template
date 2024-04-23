@@ -1,4 +1,5 @@
 // 公共方法
+import 'dart:io' show Directory;
 import 'dart:async' show FutureOr;
 import 'package:lpinyin/lpinyin.dart';
 import 'package:flutter/material.dart';
@@ -52,11 +53,25 @@ extension NumberHelper on num {
 
     return this.toStringAsFixed(digit + 1).replaceFirst(RegExp(r'\d$'), ''); // 保留小数点后 digit 位，不四舍五入
   }
+
+  String get size { // 数据大小格式化
+    if (this < 1024) return '${this.toStringByDigit(2)} B';
+    if (this < 1024 * 1024) return '${(this / 1024).toStringByDigit(2)} KB';
+    if (this < 1024 * 1024 * 1024) return '${(this / 1024 / 1024).toStringByDigit(2)} MB';
+    if (this < 1024 * 1024 * 1024 * 1024) return '${(this / 1024 / 1024 / 1024).toStringByDigit(2)} GB';
+    if (this < 1024 * 1024 * 1024 * 1024 * 1024) return '${(this / 1024 / 1024 / 1024 / 1024).toStringByDigit(2)} TB';
+
+    return NumberHelper.placeholder;
+  }
 }
 
 extension NullHelper on Null {
   String get fillWithString => StringHelper.placeholder;
   String get fillWithNumber => NumberHelper.placeholder;
+}
+
+extension DirectoryHelper on Directory {
+  Future<int> get fileSize => this.list(recursive: true).fold<int>(0, (sum, file) => sum + file.statSync().size); // 获取文件夹中所有文件大小
 }
 
 /// 项目内部的通用方法

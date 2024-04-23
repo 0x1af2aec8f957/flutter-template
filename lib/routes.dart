@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import './views/About.dart';
 import './views/Count.dart';
+import './views/Storage.dart';
 import './views/Example.dart';
 import './views/FormTest.dart';
 import './views/SubRouter.dart';
@@ -40,6 +41,10 @@ final routes = [
   GoRoute(
     path: '/about',
     builder: (context, state) => About(title: '关于'),
+  ),
+  GoRoute(
+    path: '/storage',
+    builder: (context, state) => Storage(title: '存储空间'),
   ),
   GoRoute(
     path: '/example',
