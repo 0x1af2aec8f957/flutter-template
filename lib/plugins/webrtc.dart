@@ -185,7 +185,7 @@ class Webrtc {
 
     Http.original.getUri(_webrtcUrl.replace(scheme: 'https', path: '/api/turn', queryParameters: { // 获取 turn 服务器配置
       "service": "turn",
-      "username": "flutter-webrtc"
+      "username": "flutter-${AppConfig.system}-webrtc"
     })).then((response) {
       /*{
           "username": "1584195784:mbzrxpgjys",
