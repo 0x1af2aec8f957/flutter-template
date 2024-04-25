@@ -1,5 +1,6 @@
 // 公共方法
 import 'dart:io' show Directory;
+import 'dart:convert' show json;
 import 'dart:async' show FutureOr;
 import 'package:lpinyin/lpinyin.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,16 @@ extension StringHelper on String {
 
   bool get isNumber => num.tryParse(this) != null; // 是否是数字
   num get parseWithNumber => num.tryParse(this) ?? 0; // 转换为数字
+
+  Map<String, dynamic> get parseWithJson => this.isJsonMap ? json.decode(this) : Map<String, dynamic>(); // 转换为 Map
+  bool get isJsonMap { // 是否是 jsonMap
+    try {
+      if (!this.startsWith('{') || !this.endsWith('}')) return false;
+      return json.decode(this) is Map<String, dynamic>;
+    } catch (_) {
+      return false;
+    }
+  }
 }
 
 extension NumberHelper on num {

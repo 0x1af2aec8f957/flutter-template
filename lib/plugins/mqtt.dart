@@ -7,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 import '../setup/config.dart';
 import '../plugins/dialog.dart';
+import '../utils/common.dart';
 
 typedef Callback = void Function(String topic, dynamic payload);
 final _cacheQueue = Map<String, Callback>(); // 缓存队列
@@ -147,7 +148,7 @@ class _MQTTService {
           final String payload = MqttPublishPayload.bytesToStringAsString(_message.payload.message);
           Talk.log('收到订阅:$topic', name: 'MQTT-client');
           Talk.log('消息推送:$payload', name: 'MQTT-client');
-          if (callback != null) callback(topic, json.decode(payload));
+          if (callback != null) callback(topic, payload.parseWithJson);
         });
   }
 

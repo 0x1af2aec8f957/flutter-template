@@ -7,9 +7,10 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './signer.dart';
+import './dialog.dart';
+import '../utils/common.dart';
 import '../setup/config.dart';
 import '../setup/router.dart' show router;
-import 'dialog.dart';
 import '../components/NoPermission.dart';
 
 /// doc: https://github.com/cfug/dio/blob/main/dio/README-ZH.md
@@ -151,7 +152,7 @@ class MainTransformer extends BackgroundTransformer { // 主要的转换器,在�
     if (extra['signed'] == true && options.responseType == ResponseType.plain /* 接口签名必须使用该预期值 */) { // 是否对数据进行解码
       final responseText = await super.transformResponse(options, response);
       final responseBody = Crypto(options.uri).decrypt(data: responseText is String ? responseText :responseText.toString());
-      return json.decode(responseBody);
+      return responseBody.parseWithJson;
     }
 
     return super.transformResponse(options, response);
