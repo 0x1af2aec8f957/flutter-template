@@ -1,7 +1,8 @@
 // 公共方法
 import 'dart:io' show Directory;
-import 'dart:convert' show json;
 import 'dart:async' show FutureOr;
+import 'dart:convert' show Utf8Encoder, json;
+import 'package:crypto/crypto.dart' show Digest, md5;
 import 'package:lpinyin/lpinyin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show MethodChannel, Clipboard, ClipboardData;
@@ -42,10 +43,12 @@ extension StringHelper on String {
   Future<void> copyWithClipboard() => ClipboardHelper.copy(this); // 复制到粘贴板
 
   bool get isNumber => num.tryParse(this) != null; // 是否是数字
-  num get parseWithNumber => num.tryParse(this) ?? 0; // 转换为数字
+  num get parseToNumber => num.tryParse(this) ?? 0; // 转换为数字
 
-  Map<String, dynamic> get parseWithJson => this.isJsonMap ? json.decode(this) : Map<String, dynamic>(); // 转换为 Map
-  bool get isJsonMap { // 是否是 jsonMap
+  Digest get parseToMD5 => md5.convert(Utf8Encoder().convert(this)); // 转换为 MD5
+
+  Map<String, dynamic> get parseToMap => this.isJsonString ? json.decode(this) : Map<String, dynamic>(); // 转换为 Map
+  bool get isJsonString { // 是否是 jsonMap
     try {
       if (!this.startsWith('{') || !this.endsWith('}')) return false;
       return json.decode(this) is Map<String, dynamic>;
@@ -74,6 +77,14 @@ extension NumberHelper on num {
 
     return NumberHelper.placeholder;
   }
+}
+
+extension MapHelper on Map {
+  String get parseToString => json.encode(this); // 转换为 jsonString
+}
+
+extension ListHelper on List {
+  String get parseToString => json.encode(this); // 转换为 jsonString
 }
 
 extension NullHelper on Null {

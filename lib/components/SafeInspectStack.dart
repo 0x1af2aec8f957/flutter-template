@@ -2,6 +2,7 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../utils/common.dart';
 import '../setup/config.dart';
 
 /// 应用安全检查
@@ -90,7 +91,7 @@ class _SafeInspectStack extends State<SafeInspectStack> with WidgetsBindingObser
                               )]
                           ),
                           child: Text(
-                            '${snapshot.data?.appName ?? ''} 正在运行',
+                            '${snapshot.data?.appName  ?? StringHelper.placeholder} 正在运行',
                             textAlign: TextAlign.center,
                             style: TextStyle(color: Colors.grey[600], fontSize: 20, decoration: TextDecoration.none),
                           ),

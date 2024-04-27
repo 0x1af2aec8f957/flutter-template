@@ -29,7 +29,7 @@ class _JPush{
       appKey: 'AppConfig.pushKey', // 极光平台上创建的应用，自动生成的AppKey
       channel: 'developer-default', // 通道
     );
-    if (AppConfig.platform == 'ios') applyPushAuthority(new auroraPush.NotificationSettingsIOS(sound: true, alert: true, badge: true)); // ios请求通知授权
+    if (AppConfig.system == 'ios') applyPushAuthority(new auroraPush.NotificationSettingsIOS(sound: true, alert: true, badge: true)); // ios请求通知授权
   }
 
   /// 获取极光推送注册ID
@@ -149,7 +149,7 @@ class _JPush{
   /// @param {Notification} notification
   ///
   Future<String> sendLocalNotification(auroraPush.LocalNotification localNotification) {
-    final fireTime = localNotification.fireTime?.add(Duration(milliseconds: AppConfig.platform == 'ios' ? 100 : 0)); // iOS需要延迟100ms，link: https://github.com/jpush/jpush-react-native/issues/422#issuecomment-407681784
+    final fireTime = localNotification.fireTime?.add(Duration(milliseconds: AppConfig.system == 'ios' ? 100 : 0)); // iOS需要延迟100ms，link: https://github.com/jpush/jpush-react-native/issues/422#issuecomment-407681784
     return instance.sendLocalNotification(auroraPush.LocalNotification(
         buildId: localNotification.buildId,
         id: localNotification.id,

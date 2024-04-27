@@ -86,9 +86,9 @@ class _MQTTService {
     // 未实例化才开始执行实例化
     final DeviceInfoPlugin deviceInfoPlugin = AppConfig.deviceInfo; // 获取设备信息
     final Future<String>? fetchIdentifier = // 获取设备唯一标识码
-    AppConfig.platform == 'android'
+    AppConfig.system == 'android'
         ? deviceInfoPlugin.androidInfo.then((AndroidDeviceInfo build) => build.androidId) // android
-        : AppConfig.platform == 'ios'
+        : AppConfig.system == 'ios'
           ? deviceInfoPlugin.iosInfo.then((IosDeviceInfo build) => build.identifierForVendor) // ios
           : null;
 

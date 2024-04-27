@@ -1,11 +1,11 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pub_semver/pub_semver.dart' show Version;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_xupdate/flutter_xupdate.dart';
 
 import '../setup/config.dart';
+import '../utils/common.dart';
 import '../plugins/dialog.dart';
 
 class _AppInfo { // doc: https://raw.githubusercontent.com/xuexiangjys/flutter_xupdate/master/example/lib/app_info.dart
@@ -53,9 +53,9 @@ class _AppInfo { // doc: https://raw.githubusercontent.com/xuexiangjys/flutter_x
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson() => toMap().parseToString;
 
-  static _AppInfo? fromJson(String source) => fromMap(json.decode(source));
+  static _AppInfo? fromJson(String source) => fromMap(source.parseToMap);
 
   @override
   String toString() {

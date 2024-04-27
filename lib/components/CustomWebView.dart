@@ -1,11 +1,10 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:dio/dio.dart' show RequestOptions, ResponseType;
-import 'package:crypto/crypto.dart' show md5;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -13,6 +12,7 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import './QrCode/Index.dart';
+import '../utils/common.dart';
 import '../setup/config.dart';
 import '../plugins/http.dart';
 import '../plugins/dialog.dart';
@@ -152,12 +152,12 @@ class _CustomWebView extends State<CustomWebView> {
         if (Platform.isAndroid) deviceId ??= (await deviceInfo.androidInfo).id;
         if (Platform.isIOS) deviceId ??= (await deviceInfo.iosInfo).identifierForVendor;
 
-        deviceId ??= md5.convert(Utf8Encoder().convert((await deviceInfo.deviceInfo).toString())).toString();
+        deviceId ??= (await deviceInfo.deviceInfo).toString().parseToMD5.toString();
         controller.runJavaScript("window.getDeviceIdCallback('${deviceId}')");
       })
       ..addJavaScriptChannel('request', onMessageReceived: (message) { // 跨域请求
-        final options = jsonDecode(message.message); // 解析参数
-        if (options is! Map) return; // 必须传入 可解析为 RequestOptions 的 Map 参数
+        final options = message.message.parseToMap; // 解析参数
+        // if (options is! Map) return; // 必须传入 可解析为 RequestOptions 的 Map 参数
         if (options['path'] == null || options['baseUrl'] == null) return; // 必须传入 path 或 baseUrl
 
         Http.original.fetch(RequestOptions( // 发起请求
@@ -169,7 +169,7 @@ class _CustomWebView extends State<CustomWebView> {
           headers: options['headers'] ?? {},
           contentType: options['contentType'] ?? 'application/json',
           responseType: options['responseType'] ?? ResponseType.json,
-        )).then((value) => controller.runJavaScript("window.requestCallback('${value.data is String ? value.data : jsonEncode(value.data)}')"));
+        )).then((value) => controller.runJavaScript("window.requestCallback('${value.data is String ? value.data : (value.data as Map).parseToString}')"));
       })
       ..addJavaScriptChannel('openUrl', onMessageReceived: (message) async { // 使用外部默认打开方式打开链接
         if (await canLaunchUrl(Uri.parse(message.message))) launchUrl(Uri.parse(message.message)); // canLaunchUrl 需要额外的权限描述：https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher#configuration
@@ -177,14 +177,14 @@ class _CustomWebView extends State<CustomWebView> {
       ..addJavaScriptChannel('openWebView', onMessageReceived: (message) { // 打开全屏 webview
         FullScreenWebView.open(context, url: message.message);
       })
+      ..addJavaScriptChannel('openNativeView', onMessageReceived: (message) { // 打开主程序 view
+        context.push<void>(message.message);
+      })
       ..addJavaScriptChannel('openScan', onMessageReceived: (message) { // 打开 扫码界面
         QrCodeScanPage.open<String>(context).then((result) {
           if (result != null) controller.runJavaScript("window.scanCallback('$result')"); // 将扫码结果返回给小程序
         });
-      })
-      /* ..addJavaScriptChannel('test', onMessageReceived: (message) { // 保存域名
-        Talk.log(message.message, name: 'JavaScriptChannel-test');
-      }) */;
+      });
 
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(!AppConfig.isProduction); // android debug
