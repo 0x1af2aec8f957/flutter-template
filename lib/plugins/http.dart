@@ -129,7 +129,7 @@ class MainTransformer extends BackgroundTransformer { // 主要的转换器,在�
     if (options.data is Map<String, dynamic>) {
       final extra = options.extra;
 
-      // data只有两种类型：formData或者json
+      // data 只有两种类型：FormData 或者 Map
       final data = options.contentType == Headers.formUrlEncodedContentType ? FormData.fromMap(options.data) : (options.data as Map).parseToString;
 
       if (extra['signed'] == true) { // 是否对数据进行签名

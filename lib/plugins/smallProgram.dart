@@ -19,6 +19,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:belatuk_range_header/belatuk_range_header.dart'; // RangeHeader 解析
 
 import '../setup/config.dart';
+import '../utils/common.dart';
 import '../plugins/http.dart';
 import '../plugins/dialog.dart';
 
@@ -196,7 +197,7 @@ class SmallProgram { // isolate 启动参数
       }
 
       if (file.existsSync() && isAgentCache) { // 如果缓存文件存在，则直接返回
-        final headers = header.existsSync() ? Map<String, Object>.from(jsonDecode(header.readAsStringSync())) : Map<String, Object>();
+        final headers = header.existsSync() ? Map<String, Object>.from(header.readAsStringSync().parseToMap) : Map<String, Object>();
         final body = file.readAsBytesSync();
         Talk.log('缓存url地址：${request.url}', name: 'SmallProgram');
         Talk.log('找到需要返回的缓存主体文件：${file.path}', name: 'SmallProgram');
@@ -233,7 +234,7 @@ class SmallProgram { // isolate 启动参数
 
         headers['server'] = 'shelf'; // 添加 server 响应头
         Talk.log('正在创建缓存头文件：${header.path}', name: 'SmallProgram');
-        header.writeAsStringSync(jsonEncode(headers)); // 将响应头写入缓存头文件(jsonString)
+        header.writeAsStringSync(headers.parseToString); // 将响应头写入缓存头文件(jsonString)
 
         final controller = response.read().listen(
           (newBytes) {

@@ -9,6 +9,7 @@ import 'package:random_string/random_string.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
 import '../setup/config.dart';
+import '../utils/common.dart';
 import '../plugins/http.dart';
 import '../plugins/dialog.dart';
 import '../components/WebRtcScreenSelect.dart';
@@ -313,7 +314,7 @@ class Webrtc {
 
   void onMessage(message) async {
     Talk.log('收到消息：$message', name: 'Webrtc');
-    Map<String, dynamic> mapData = json.decode(message);
+    final Map<String, dynamic> mapData = (message as String).parseToMap;
     final data = mapData['data'];
 
     switch (mapData['type']) {
@@ -611,10 +612,10 @@ class Webrtc {
 
   void _send(event, data) {
     Talk.log('发送数据: $data', name: 'Webrtc');
-    return socket?.add(jsonEncode({
+    return socket?.add({
       "type": event,
       "data": data,
-    }));
+    }.parseToString);
   }
 
   Future<void> close() {

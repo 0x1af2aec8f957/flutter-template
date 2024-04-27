@@ -95,7 +95,7 @@ abstract class AppUpgrade {
             if (message?["code"] == 4000) Talk.toast('下载失败');
           }/* ,
           onUpdateParse: (String? json) async {//这里是自定义json解析
-            final _AppInfo? remoteInfo = _AppInfo.fromJson(jsonDecode(json!));
+            final _AppInfo? remoteInfo = _AppInfo.fromJson(json!);
             final PackageInfo localeInfo = await AppConfig.packageInfo;
             return UpdateEntity(
                 hasUpdate: localeInfo.version != remoteInfo?.versionCode,
