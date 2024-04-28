@@ -29,7 +29,7 @@ dependencies:
   path_provider: ^2.1.2 # 获取应用程序目录
   dio: ^5.4.1 # http支持
   shared_preferences: ^2.2.2 # 数据持久化存储
-  package_info_plus: ^3.1.2 # 应用程序包描述信息
+  package_info_plus: ^7.0.0 # 应用程序包描述信息
   yaml: ^3.1.2 # yml文件内容解析器
   file: ^7.0.0 # 内存文件系统
   # pointycastle: ^3.7.4 # 加密基础库
@@ -49,10 +49,13 @@ dependencies:
   image_gallery_saver: ^2.0.3 # 保存图片到相册
   # jpush_flutter: ^2.5.1 # 激光推送
   connectivity_plus: ^5.0.2 # 网络链接状态
-  # wakelock: ^0.6.2 # App常亮显示
+  # wakelock_plus: ^1.2.4 # App常亮显示
   # image_cropper: ^5.0.1 # 图片裁剪
   image_picker: ^1.0.7 # 图库
-  flutter_xupdate: ^3.0.0 # Android应用内升级
+  flutter_xupdate: # Android应用内升级
+    git:
+      url: https://github.com/0x1af2aec8f957/flutter_xupdate.git
+      ref: master
   flutter_html: 3.0.0-beta.2 # html渲染成widget
   # local_auth: ^2.2.0 #指紋/面部
   pub_semver: ^2.1.4 # 版本约束检查

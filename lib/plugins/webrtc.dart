@@ -638,8 +638,9 @@ class Webrtc {
   }
 
   void _closeSessionByPeerId(String peerId) { // leave
-    final sessionId = _sessions.values.firstWhere((_session) => _session.pid == peerId).sid;
-    _closeSession(sessionId);
+    final sessionIndex = _sessions.values.toList().indexWhere((_session) => _session.pid == peerId);
+    if (sessionIndex == -1) return;
+    _closeSession(_sessions.values.elementAt(sessionIndex).sid);
   }
 
   Future<void> _closeSession(String sessionId) async {

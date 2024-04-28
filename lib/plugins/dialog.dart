@@ -60,15 +60,23 @@ abstract class Talk {
   }
 
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(Widget content, {BuildContext? context, SnackBarAction? action, Duration duration = const Duration(seconds: 4)}) { // 底部提示信息
-    final instance = ScaffoldMessenger.of(context ?? AppConfig.navigatorContext)
-      ..removeCurrentSnackBar(); // 移除上一次的 snackBar
+    final instance = ScaffoldMessenger.of(context ?? AppConfig.navigatorContext)..removeCurrentSnackBar()/* 移除上一次的 snackBar */;
     return instance.showSnackBar(SnackBar(content: content, duration: duration, action: action));
   }
 
   static ScaffoldFeatureController<MaterialBanner, MaterialBannerClosedReason> materialBanner(Widget content, {BuildContext? context, List<Widget> actions = const []}) { // 顶部提示信息（会一直展示，除非主动关闭）
-    final instance = ScaffoldMessenger.of(context ?? AppConfig.navigatorContext)
-      ..removeCurrentMaterialBanner(); // 移除上一次的 materialBanner
-    return instance.showMaterialBanner(MaterialBanner(content: content, actions: actions));
+    final instance = ScaffoldMessenger.of(context ?? AppConfig.navigatorContext)..removeCurrentMaterialBanner()/* 移除上一次的 materialBanner */;
+    return instance.showMaterialBanner(MaterialBanner(
+      content: content,
+      actions: actions.map((action) => Overlay( // Tootip类的按钮需要手动添加 Overlay, issue: https://stackoverflow.com/questions/61087158/materialapp-builder-error-no-overlay-widget-found
+        initialEntries: [
+            OverlayEntry(
+              canSizeOverlay: true,
+              builder: (_) => action,
+            ),
+          ],
+      )).toList(),
+    ));
   }
 
   static Future<void> loading([String text = "请稍后..."]) {
