@@ -46,10 +46,10 @@ class Protocol{
   }
 
   factory Protocol.tryFromBase64(String base64Href){ // 解析来自base64编码的字符串
-    try{
+    try {
       final Uint8List _href = base64Decode(base64Href);
       return Protocol(utf8.decode(_href));
-    }catch(e){
+    } catch(e) {
       throw Exception('Protocol.tryFromBase64: $e');
     }
   }
