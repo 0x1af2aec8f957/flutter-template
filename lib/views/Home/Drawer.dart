@@ -40,6 +40,13 @@ class LeftDrawer extends StatelessWidget {
                           }
                         ),
                         TextButton(
+                          child: Text('语言设置'),
+                          style: TextButton.styleFrom(textStyle: const TextStyle(color: Colors.blue)),
+                          onPressed: () {
+                            context.push("/language");
+                          }
+                        ),
+                        TextButton(
                           child: Text('关于'),
                           style: TextButton.styleFrom(textStyle: const TextStyle(color: Colors.blue)),
                           onPressed: () {

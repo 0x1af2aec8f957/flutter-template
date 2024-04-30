@@ -5,6 +5,7 @@ import './views/About.dart';
 import './views/Count.dart';
 import './views/Storage.dart';
 import './views/Example.dart';
+import './views/Language.dart';
 import './views/FormTest.dart';
 import './views/SubRouter.dart';
 import './views/Home/index.dart';
@@ -45,6 +46,10 @@ final routes = [
   GoRoute(
     path: '/storage',
     builder: (context, state) => Storage(title: '存储空间'),
+  ),
+  GoRoute(
+    path: '/language',
+    builder: (context, state) => Language(title: '语言设置'),
   ),
   GoRoute(
     path: '/example',
