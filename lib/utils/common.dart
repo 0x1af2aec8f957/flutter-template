@@ -97,7 +97,7 @@ extension DirectoryHelper on Directory {
 }
 
 /// 项目内部的通用方法
-Future<void> openSchemaUri(Uri? uri) {
+Future<void> openSchemaUri(Uri? uri) { // 通过 schema 协议打开页面
   if (uri == null) return Future.error('不是从schema协议启动的，停止跳转');
   return router.push('${uri.path}?${uri.query}');
 }
