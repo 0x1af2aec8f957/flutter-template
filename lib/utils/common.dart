@@ -88,8 +88,8 @@ extension ListHelper on List {
 }
 
 extension NullHelper on Null {
-  String get fillWithString => StringHelper.placeholder;
-  String get fillWithNumber => NumberHelper.placeholder;
+  String get fillToString => StringHelper.placeholder;
+  String get fillToNumber => NumberHelper.placeholder;
 }
 
 extension DirectoryHelper on Directory {
