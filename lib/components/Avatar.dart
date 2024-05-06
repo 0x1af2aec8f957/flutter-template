@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './CustomNetworkImage.dart';
+import './CustomImage.dart';
 
 /// 自定义头像
 class Avatar extends StatelessWidget {
@@ -55,7 +55,7 @@ class Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomNetworkImage(
+    return CustomImage(
       url: url,
       width: width,
       radius: radius,
