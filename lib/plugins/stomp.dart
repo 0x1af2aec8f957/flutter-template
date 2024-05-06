@@ -59,6 +59,9 @@ class CustomStompClient {
   void onConnect(StompFrame connectFrame) { // 连接
     isConnected.value = client?.connected ?? false;
     Talk.log('Connected', name: 'Stomp');
+    subscribeRecords.forEach((topic, records) {
+      subscribe(topic, null); // 重新订阅（重连时必须）
+    });
     /* subscribe('/topic/greetings', (StompFrame frame) {
       Talk.log('/topic/greetings - Received: ${frame.body}', name: 'Stomp');
     });
@@ -82,9 +85,12 @@ class CustomStompClient {
     Talk.log('Disconnect', name: 'Stomp');
   }
 
-  Future<LocalKey> subscribe(String topic, void Function(StompFrame frame) callback, { Map<String, String>? headers }) { // 订阅
+  Future<LocalKey> subscribe(String topic, void Function(StompFrame frame)? callback, { Map<String, String>? headers }) { // 订阅
     final record = (key: UniqueKey(), callback: callback); // 本次生成的订阅记录
-    subscribeRecords.update(topic, (_records) => [..._records, record], ifAbsent: () => [record]); // 订阅记录更新
+    if (callback != null) { // 订阅记录更新
+      final _record = record as ({void Function(StompFrame) callback, LocalKey key});
+      subscribeRecords.update(topic, (_records) => [..._records, _record], ifAbsent: () => [_record]);
+    }
 
     return FutureHelper.doWhileByDuration(() => !isConnected.value).then((_) { // 等待 stomp 连接完成才能订阅
       unSubscribe(topic, clearRecords: false); // 取消上一次订阅
