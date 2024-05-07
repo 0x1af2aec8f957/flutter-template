@@ -85,6 +85,7 @@ abstract class Talk {
       barrierDismissible: false, //点击遮罩不关闭对话框
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.grey,
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -105,8 +106,9 @@ abstract class Talk {
       context: AppConfig.navigatorContext,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
-          content: Text(text),
+          backgroundColor: Colors.grey,
+          title: Text(title, style: TextStyle(color: Colors.white)),
+          content: Text(text, style: TextStyle(color: Colors.black.withOpacity(0.8))),
           actions: <Widget>[
             /*Offstage( // 需要隐藏后维护状态，请使用Visibility
               offstage: isCancel,
@@ -117,6 +119,9 @@ abstract class Talk {
             ),*/
             if (isCancel) TextButton(
               child: Text("取消"),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black.withOpacity(0.6),
+              ),
               onPressed: () => ModalRoute.of(context)!.isCurrent ? Navigator.of(context).pop(false) : null,
             ),
             TextButton(
