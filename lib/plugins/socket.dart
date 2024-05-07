@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import './http.dart';
 import '../setup/config.dart';
 import '../plugins/dialog.dart';
 
@@ -20,7 +21,8 @@ class CustomSocketClient {
     return SharedPreferences.getInstance().then((prefs) => WebSocket.connect(
       _wsUrl.toString(),
       headers: {
-        "username": "username",
+        ...options.headers,
+        "username": AppConfig.localHostname,
         "Authorization": prefs.getString('token'),
       },
       customClient: !AppConfig.isProduction ? (HttpClient(context: SecurityContext())..badCertificateCallback = (X509Certificate cert, String host, int port) {

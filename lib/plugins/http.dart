@@ -22,6 +22,7 @@ final BaseOptions options = BaseOptions(// 单次请求的配置[Options]，可�
   headers: <String, dynamic>{ // 公用headers，需要异步或者动态获取的值，在拦截器中设置
     'language': AppConfig.local.toString(), // 语言
     'platform': AppConfig.system, // 平台
+    'local-host-name': AppConfig.localHostname, // 本地主机名
   },
   // path: '', // 请求路径，如果 `path` 以 "http(s)"开始, 则 `baseURL` 会被忽略； 否则将会和baseUrl拼接出完整的的url. 已废弃，options有效。
   contentType: Headers.jsonContentType, // 请求的Content-Type，默认值是"application/json; charset=utf-8"

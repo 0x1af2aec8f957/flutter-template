@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class AppConfig {
   static String system = Platform.operatingSystem; // 操作系统字符串（小写）
+  static String localHostname = Platform.localHostname; // 本地主机名
   static String systemVersion = Platform.operatingSystemVersion; // 操作系统版本
 
   // doc: https://api.flutter.dev/flutter/foundation/kReleaseMode-constant.html

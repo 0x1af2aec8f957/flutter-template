@@ -1,5 +1,5 @@
 import 'dart:typed_data' show Uint8List;
-import 'package:flutter/material.dart' show ValueNotifier, UniqueKey, LocalKey;
+import 'package:flutter/material.dart' show BuildContext, LocalKey, UniqueKey, ValueNotifier;
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../setup/config.dart';
 import '../utils/common.dart';
+import '../plugins/http.dart';
 import '../plugins/dialog.dart';
 
 final _wsUrl = Uri.https('example.com').replace(scheme: 'wss');
@@ -20,6 +21,7 @@ class CustomStompClient {
   })>> subscribeRecords = Map();
   final Map<String, void Function({Map<String, String>? unsubscribeHeaders})> unSubscribeTopicFunctions = Map(); // 取消订阅函数
 
+  BuildContext get context => AppConfig.navigatorContext; // 全局 context
   Future<StompConfig> get config {
     return SharedPreferences.getInstance().then((prefs) => StompConfig( // 配置文件
       url: _wsUrl.toString(),
@@ -29,11 +31,13 @@ class CustomStompClient {
       beforeConnect: onBeforeConnect,
       onDebugMessage: onDebugMessage,
       stompConnectHeaders: {
-        "username": "username",
+        ...options.headers,
+        "username": AppConfig.localHostname,
         "Authorization": prefs.getString('token') ?? '',
       },
       webSocketConnectHeaders: {
-        "username": "username",
+        ...options.headers,
+        "username": AppConfig.localHostname,
         "Authorization": prefs.getString('token') ?? '',
       },
     ));
@@ -95,9 +99,12 @@ class CustomStompClient {
     return FutureHelper.doWhileByDuration(() => !isConnected.value).then((_) { // 等待 stomp 连接完成才能订阅
       unSubscribe(topic, clearRecords: false); // 取消上一次订阅
       final unSubscribeTopicFunction = client?.subscribe(
+        headers: {
+          ...options.headers,
+          if (headers != null) ...headers,
+        },
         destination: topic,
         callback: (StompFrame frame) => subscribeRecords[topic]?.forEach((item) => item.callback(frame)), // 执行所有订阅回调函数
-        headers: headers,
       );
 
       if (unSubscribeTopicFunction != null) unSubscribeTopicFunctions[topic] = unSubscribeTopicFunction; // 记录取消订阅函数
@@ -108,10 +115,13 @@ class CustomStompClient {
 
   void sendMessage(String topic, String? body, { Map<String, String>? headers, Uint8List? binaryBody }) { // 发送消息
     return client?.send(
-      destination: topic,
       body: body,
-      headers: headers,
+      destination: topic,
       binaryBody: binaryBody,
+      headers: {
+        ...options.headers,
+        if (headers != null) ...headers,
+      },
     );
   }
 
