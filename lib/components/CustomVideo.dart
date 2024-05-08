@@ -42,7 +42,7 @@ class _CustomVideo extends State<CustomVideo> {
   }) */;
 
   bool get isValidAbsoluteUrl => Uri.parse(widget.url).isAbsolute;
-  bool get isValidFileUrl => !Uri.parse(widget.url).isAbsolute;
+  bool get isValidFileUrl => !isValidAbsoluteUrl || Uri.parse(widget.url).isScheme('FILE');
   bool get isValidAssetUrl => isValidFileUrl && widget.url.startsWith('assets/');
 
   void handleCheckPlayState() { // 切换播放状态

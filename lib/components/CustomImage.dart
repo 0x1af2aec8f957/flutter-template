@@ -38,7 +38,7 @@ class CustomImage extends StatelessWidget {
   num get random => Random().nextDouble() * 100;
   bool get isValidUrl => url != null;
   bool get isValidAbsoluteUrl => isValidUrl && Uri.parse(url!).isAbsolute;
-  bool get isValidFileUrl => isValidUrl && !Uri.parse(url!).isAbsolute;
+  bool get isValidFileUrl => !isValidAbsoluteUrl || Uri.parse(url!).isScheme('FILE');
   bool get isValidAssetUrl => isValidFileUrl && url!.startsWith('assets/');
 
   @override

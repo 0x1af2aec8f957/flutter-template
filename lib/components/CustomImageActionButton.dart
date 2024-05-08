@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -116,10 +117,14 @@ class CustomImageActionButton extends StatelessWidget {
         onPageChanged: onPageChanged,
         builder: (BuildContext context, int index) {
           final Uri imageSrc = images[index];
+          final bool isValidAbsoluteUrl = imageSrc.isAbsolute;
+          final bool isValidFileUrl = !isValidAbsoluteUrl || imageSrc.isScheme('FILE');
+          final bool isValidAssetUrl = isValidFileUrl && imageSrc.path.startsWith('assets/');
+
           Offset pointPosition = Offset.zero;
 
           return PhotoViewGalleryPageOptions(
-            imageProvider: (imageSrc.isScheme('FILE') ? AssetImage(imageSrc.path) : CachedNetworkImageProvider(imageSrc.toString())) as ImageProvider<Object>,
+            imageProvider: (isValidAssetUrl ? AssetImage(imageSrc.path) : isValidFileUrl ? FileImage(File(imageSrc.path)) : CachedNetworkImageProvider(imageSrc.toString())) as ImageProvider<Object>,
             initialScale: PhotoViewComputedScale.contained * 0.8,
             heroAttributes: PhotoViewHeroAttributes(tag: imageSrc),
             onTapUp: (context, details, controllerValue) { // 手指移除

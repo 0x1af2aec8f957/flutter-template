@@ -207,7 +207,17 @@ class _CustomWebView extends State<CustomWebView> {
         ..setAllowsBackForwardNavigationGestures(true); // 允许手势返回
     }
 
-    if (widget.url != null) controller.loadRequest(Uri.parse(widget.url!)); // 加载网页地址
+    if (widget.url != null) { // 加载 url
+      final Uri uri = Uri.parse(widget.url!);
+      final bool isValidAbsoluteUrl = uri.isAbsolute;
+      final bool isValidFileUrl = !isValidAbsoluteUrl || uri.isScheme('FILE');
+      final bool isValidAssetUrl = isValidFileUrl && uri.path.startsWith('assets/');
+
+      if (isValidAssetUrl) controller.loadFlutterAsset(uri.path); // 加载 asset
+      if (isValidFileUrl) controller.loadFile(uri.path); // 加载 file
+      controller.loadRequest(uri); // 加载 url
+    }
+
     widget.onWebViewCreated?.call(controller);
   }
 
