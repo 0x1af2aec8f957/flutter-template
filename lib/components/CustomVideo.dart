@@ -74,6 +74,7 @@ class _CustomVideo extends State<CustomVideo> {
             if (snapshot.connectionState != ConnectionState.done) return Center(child: CircularProgressIndicator());
         
             return Stack(
+              alignment: Alignment.center,
               children: [
                 AspectRatio(
                   aspectRatio: controller.value.aspectRatio,

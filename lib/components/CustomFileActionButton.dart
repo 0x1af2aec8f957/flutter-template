@@ -128,8 +128,16 @@ class CustomFileActionButton extends StatelessWidget {
 
   static Future<T?> preview<T>(BuildContext context, { // 预览文件（支持网络文件）
     required String filePath, // 文件路径
+    String? title, // 预览标题
   }) => Navigator.of(context).push<T>(PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => CustomWebView(url: filePath),
+    pageBuilder: (context, animation, secondaryAnimation) => Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text(title ?? '文件预览'),
+        // actions: [],
+      ),
+      body: CustomWebView(url: filePath),
+    ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0, 1);
       const end = Offset.zero;
