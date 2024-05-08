@@ -184,6 +184,12 @@ class _CustomWebView extends State<CustomWebView> {
         QrCodeScanPage.open<String>(context).then((result) {
           if (result != null) controller.runJavaScript("window.scanCallback('$result')"); // 将扫码结果返回给小程序
         });
+      })
+      ..addJavaScriptChannel('clearCache', onMessageReceived: (message) { // 清理缓存
+        controller.clearCache();
+      })
+      ..addJavaScriptChannel('clearLocalStorage', onMessageReceived: (message) { // 清理 LocalStorage
+        controller.clearLocalStorage();
       });
 
     if (controller.platform is AndroidWebViewController) {

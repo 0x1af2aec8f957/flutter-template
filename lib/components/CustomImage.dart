@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 class CustomImage extends StatelessWidget {
   final String? url;
   final double? width;
-  final double? radius;
+  final double radius;
   final Widget? errorWidget;
   final double opacity;
   final Map<String, String>? headers;
@@ -27,7 +27,7 @@ class CustomImage extends StatelessWidget {
     super.key,
     this.url,
     this.width,
-    this.radius,
+    this.radius = 4,
     this.headers,
     this.opacity = 1,
     this.errorWidget,
@@ -35,17 +35,16 @@ class CustomImage extends StatelessWidget {
     this.hasPlaceholder = true,
   });
 
-  get random => Random().nextDouble() * 100;
-  double get _radius => radius ?? 4;
-  get isValidUrl => url != null;
-  get isValidAbsoluteUrl => isValidUrl && Uri.parse(url!).isAbsolute;
-  get isValidFileUrl => isValidUrl && !Uri.parse(url!).isAbsolute;
-  get isValidAssetUrl => isValidFileUrl && url!.startsWith('assets/');
+  num get random => Random().nextDouble() * 100;
+  bool get isValidUrl => url != null;
+  bool get isValidAbsoluteUrl => isValidUrl && Uri.parse(url!).isAbsolute;
+  bool get isValidFileUrl => isValidUrl && !Uri.parse(url!).isAbsolute;
+  bool get isValidAssetUrl => isValidFileUrl && url!.startsWith('assets/');
 
   @override
   Widget build(BuildContext context) {
     if (isValidAssetUrl) return ClipRRect( // Asset 资源
-      borderRadius: BorderRadius.circular(_radius),
+      borderRadius: BorderRadius.circular(radius),
       child: SizedBox(
         width: width,
         child: Image.asset(
@@ -57,7 +56,7 @@ class CustomImage extends StatelessWidget {
     );
 
     if (isValidFileUrl) return ClipRRect( // File 文件
-      borderRadius: BorderRadius.circular(_radius),
+      borderRadius: BorderRadius.circular(radius),
       child: SizedBox(
         width: width,
         child: Image.file(
@@ -69,7 +68,7 @@ class CustomImage extends StatelessWidget {
     );
 
     return ClipRRect( // 圆角矩形
-      borderRadius: BorderRadius.circular(_radius),
+      borderRadius: BorderRadius.circular(radius),
       child: SizedBox(
         width: width,
         child: LayoutBuilder( /// NOTE: 避免使用 IntrinsicWidth 与 IntrinsicHeight，它们的开支非常昂贵，这里得到布局限制信息即可，无需强制限制内部子组件的布局大小。

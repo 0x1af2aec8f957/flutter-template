@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 import '../utils/common.dart';
@@ -11,7 +13,15 @@ class Storage extends StatelessWidget {
 
   Future<bool> handleClearApplicationDocumentsDirectory() => Talk.alert('文档数据不可被清除', title: '警告', isCancel: false); // 清空文档
 
-  Future<void> handleClearTemporaryDirectory() => Talk.sheetAlert('确定清除缓存数据吗？').then((bool isOk) => isOk ? DefaultCacheManager().emptyCache() : null); // 清空缓存
+  Future<dynamic> handleClearTemporaryDirectory() => Talk.sheetAlert('确定清除缓存数据吗？').then((bool isOk) { // 清空缓存
+    if (!isOk) return Future.error('用户取消清除缓存数据');
+    return Future.wait([
+      FilePicker.platform.clearTemporaryFiles(), // 清空临时文件
+      DefaultCacheManager().emptyCache(), // 清空缓存
+      WebViewController().clearCache(),
+      WebViewController().clearLocalStorage(),
+    ]);
+  });
 
   Future<void> handleClearDownloadsDirectory() async { // 清空下载
     final bool isOk = await Talk.sheetAlert('确定清除下载数据吗？');

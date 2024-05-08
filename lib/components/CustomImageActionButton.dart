@@ -26,7 +26,7 @@ class ActionResult { // 图片操作结果
 }
 
 class CustomImageActionButton extends StatelessWidget {
-  final Widget? actionWidget;
+  final Widget actionWidget;
   final GlobalKey? repaintBoundaryKey;
   final void Function(ActionResult imageActionResult)? onCompleted;
   const CustomImageActionButton({super.key, this.actionWidget = const Icon(Icons.more_horiz), this.repaintBoundaryKey, this.onCompleted});
@@ -34,7 +34,7 @@ class CustomImageActionButton extends StatelessWidget {
   static Future<String> pickImageByCamera() { // 拍照并选择
     final ImagePicker picker = ImagePicker();
     return picker.pickImage(source: ImageSource.camera).then((XFile? image) {
-      if (image == null) return Future.error('文件不存在');
+      if (image == null) return Future.error('图片不存在');
       return image.path;
     });
   }
@@ -42,7 +42,7 @@ class CustomImageActionButton extends StatelessWidget {
   static Future<String> pickImageByAlbum() { // 从手机相册选择
     final ImagePicker picker = ImagePicker();
     return picker.pickImage(source: ImageSource.gallery).then((XFile? image) {
-      if (image == null) return Future.error('文件不存在');
+      if (image == null) return Future.error('图片不存在');
       return image.path;
     });
   }

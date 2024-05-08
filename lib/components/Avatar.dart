@@ -6,7 +6,7 @@ import './CustomImage.dart';
 class Avatar extends StatelessWidget {
   final String? url;
   final double width;
-  final double? radius;
+  final double radius;
   final double opacity;
   final Map<String, String>? headers;
   final Widget errorWidget;
@@ -15,7 +15,7 @@ class Avatar extends StatelessWidget {
     super.key,
     this.url,
     this.width = 50,
-    this.radius,
+    this.radius = 4,
     this.headers,
     this.opacity = 1,
     this.errorWidget = const Icon(Icons.person),

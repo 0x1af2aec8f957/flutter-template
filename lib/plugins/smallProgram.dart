@@ -135,7 +135,7 @@ class SmallProgram { // isolate 启动参数
     Talk.log('正在将 ${tmpFile.path} 的内容 写入到 ${file.path}', name: 'SmallProgram');
     file.writeAsBytesSync(tmpFile.readAsBytesSync());
     Talk.log('正在删除临时下载文件：${tmpFile.path}', name: 'SmallProgram');
-    tmpFile.delete(recursive: true); // 重命名临时文件
+    tmpFile.delete(recursive: true); // 删除临时文件
 
     if (isDecompress) await handleDecompression(); // 解压资源包
   }
