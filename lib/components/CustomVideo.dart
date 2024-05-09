@@ -9,6 +9,7 @@ class CustomVideo extends StatefulWidget {
   final String url;
   final double? width;
   final double radius;
+  final bool hasIconButton; // 是否显示播放按钮
   final Map<String, String> headers;
   VideoPlayerOptions? videoPlayerOptions;
 
@@ -17,6 +18,7 @@ class CustomVideo extends StatefulWidget {
     required this.url,
     this.width,
     this.radius = 4,
+    this.hasIconButton = false,
     this.headers = const <String, String>{},
     this.videoPlayerOptions,
   });
@@ -59,6 +61,7 @@ class _CustomVideo extends State<CustomVideo> {
   @override
   void initState() {
     super.initState();
+    controller..setLooping(true)..play();
   }
 
   @override
@@ -80,10 +83,10 @@ class _CustomVideo extends State<CustomVideo> {
                   aspectRatio: controller.value.aspectRatio,
                   child: VideoPlayer(controller),
                 ),
-                Positioned(
+                if (widget.hasIconButton) Positioned(
                   child: IconButton(
                     onPressed: handleCheckPlayState,
-                    icon: Icon(controller.value.isPlaying ? Icons.pause : Icons.play_arrow),
+                    icon: Icon(controller.value.isPlaying ? Icons.pause : Icons.play_arrow, color: Colors.white),
                   )
                 ),
               ],

@@ -133,6 +133,12 @@ class CustomImageActionButton extends StatelessWidget {
             onTapDown: (context, details, controllerValue) { // 手指按下
               pointPosition = details.globalPosition; // 记录按下的位置
             },
+            errorBuilder: (context, error, stackTrace) => GestureDetector(
+              onTap: () {
+                if (ModalRoute.of(context)!.isCurrent) Navigator.of(context).pop(); // 关闭预览
+              },
+              child: Center(child: Icon(Icons.broken_image_outlined)),
+            ),
           );
         },
         loadingBuilder: (context, event) => Center(
