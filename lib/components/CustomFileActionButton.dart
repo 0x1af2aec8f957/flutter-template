@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import './CustomWebview.dart';
+import '../utils/common.dart';
 import '../plugins/http.dart';
 import '../plugins/dialog.dart';
 
@@ -136,7 +137,7 @@ class CustomFileActionButton extends StatelessWidget {
         title: Text(title ?? '文件预览'),
         // actions: [],
       ),
-      body: CustomWebView(url: filePath),
+      body: CustomWebView(url: Platform.isAndroid ? 'https://file.kkview.cn/onlinePreview?url=${Uri.encodeComponent(filePath.parseToBase64)}' : filePath), // Android 使用 kkfileview 预览（https://kkfileview.keking.cn/zh-cn/docs/home.html），iOS 直接使用 WKWebview 即可预览
     ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0, 1);

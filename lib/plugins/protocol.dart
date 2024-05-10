@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import '../utils/common.dart';
+
 /// 自定义协议生成与解析（适用于内部通讯处理）
 /// ${_protocol}://${userName}@${userId}/${action}?${queryParameters}#${describe}
 
@@ -58,7 +60,6 @@ class CustomProtocol {
   }
 
   String toBase64() { // 转成base64编码的字符串
-    final bytes = utf8.encode(Uri.encodeComponent(location.toString()));
-    return base64Encode(bytes);
+    return Uri.encodeComponent(location.toString()).parseToBase64;
   }
 }

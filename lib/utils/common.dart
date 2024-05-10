@@ -1,7 +1,7 @@
 // 公共方法
 import 'dart:io' show Directory;
 import 'dart:async' show FutureOr;
-import 'dart:convert' show Utf8Encoder, json;
+import 'dart:convert' show Utf8Encoder, base64Encode, json;
 import 'package:crypto/crypto.dart' show Digest, md5;
 import 'package:lpinyin/lpinyin.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +46,8 @@ extension StringHelper on String {
   num get parseToNumber => num.tryParse(this) ?? 0; // 转换为数字
 
   Digest get parseToMD5 => md5.convert(Utf8Encoder().convert(this)); // 转换为 MD5
+
+  String get parseToBase64 => base64Encode(Utf8Encoder().convert(this)); // 转换为 Base64
 
   Map<String, dynamic> get parseToMap => this.isJsonString ? json.decode(this) : Map<String, dynamic>(); // 转换为 Map
   bool get isJsonString { // 是否是 jsonMap
