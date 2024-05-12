@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -19,6 +20,7 @@ class Storage extends StatelessWidget {
       FilePicker.platform.clearTemporaryFiles(), // 清空临时文件
       DefaultCacheManager().emptyCache(), // 清空缓存
       WebViewController().clearCache(),
+      AudioPlayer.clearAssetCache(),
       WebViewController().clearLocalStorage(),
     ]);
   });

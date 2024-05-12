@@ -82,7 +82,9 @@ dependencies:
   isar: ^3.1.0+1 # 数据库: https://isar.dev/zh/tutorials/quickstart.html
   isar_flutter_libs: ^3.1.0+1
   file_picker: ^8.0.3 # 文件选择器: https://github.com/miguelpruivo/flutter_file_picker/wiki
-  video_player: ^2.8.6
+  video_player: ^2.8.6 # 视频播放器: https://pub.dev/packages/video_player
+  just_audio: ^0.9.37 # 音频播放器: https://github.com/ryanheise/just_audio/tree/minor/just_audio
+  record: ^5.0.5 # 录音: https://github.com/llfbandit/record
 
 dev_dependencies:
   build_runner: ^2.4.9

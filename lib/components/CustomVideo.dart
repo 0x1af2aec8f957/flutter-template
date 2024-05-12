@@ -61,7 +61,7 @@ class _CustomVideo extends State<CustomVideo> {
   @override
   void initState() {
     super.initState();
-    controller..setLooping(true)..play();
+    // controller..setLooping(true)..play();
   }
 
   @override
