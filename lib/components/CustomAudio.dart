@@ -27,7 +27,7 @@ class CustomAudio extends StatefulWidget {
 }
 
 class _CustomAudio extends State<CustomAudio> {
-  final player = AudioPlayer();
+  late final player = AudioPlayer();
   late final audioSource = LockCachingAudioSource(Uri.parse(widget.url), headers: widget.headers);
 
   Duration? audioDuration;
@@ -45,11 +45,13 @@ class _CustomAudio extends State<CustomAudio> {
     }
 
     // return player.setUrl(widget.url, headers: widget.headers);
+    final audioSource = LockCachingAudioSource(Uri.parse(widget.url), headers: widget.headers);
     return player.setAudioSource(audioSource);
   }
 
-  Future<void> handleCheckPlayState() async { // 切换播放状态
-    player.seek(Duration.zero)/* 重置播放时间 */.then((_) => setState(() {
+  Future<void> handleCheckPlayState() { // 切换播放状态
+    if (player.playerState.processingState == ProcessingState.loading) return Future.error('资源尚未 加载｜下载 完成，无法播放');
+    return player.seek(Duration.zero)/* 重置播放时间 */.then((_) => setState(() {
       if (player.playing) {
        player.pause();
        return;
@@ -86,7 +88,7 @@ class _CustomAudio extends State<CustomAudio> {
               children: [
                 IconButton(
                   color: Colors.white,
-                  icon: Icon(playState?.playing == true ? Icons.pause : Icons.play_arrow, color: Colors.black),
+                  icon: playState?.processingState == ProcessingState.loading ? SizedBox.square(dimension: 15, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black)) : Icon(playState?.playing == true ? Icons.pause : Icons.play_arrow, color: Colors.black),
                   onPressed: handleCheckPlayState,
                 ),
                playState?.playing == true ? MusicPlayLoading(color: Colors.white) : Text("${audioDuration?.inSeconds ?? StringHelper.placeholder} ''", style: TextStyle(color: Colors.white)),
