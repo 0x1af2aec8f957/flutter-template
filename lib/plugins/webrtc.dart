@@ -121,6 +121,13 @@ class Webrtc {
   }
 
   Map<String, dynamic> _getMediaConstraints(String media, bool userScreen) {
+    if (media == 'audio') {
+      return {
+        'audio': true,
+        'video': false,
+      };
+    }
+
     return {
       'audio': userScreen ? false : true,
       'video': userScreen
