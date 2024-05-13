@@ -207,7 +207,7 @@ class Webrtc {
     onSignalingStateChange?.call(SignalingState.ConnectionOpen);
     Talk.log('Open', name: 'Webrtc');
     _send('new', {
-      'name': 'Flutter${Platform.operatingSystem}(${Platform.localHostname})',
+      'name': Platform.localHostname,
       'id': _selfId,
       'user_agent': 'flutter-webrtc/${Platform.operatingSystem}-plugin 0.0.1'
     });
