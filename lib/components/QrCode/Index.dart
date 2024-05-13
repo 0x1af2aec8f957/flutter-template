@@ -18,7 +18,7 @@ class QrCodeView extends QrImageView { // 二维码渲染
     required super.data,
     super.size,
     super.padding,
-    super.backgroundColor,
+    super.backgroundColor = Colors.white,
     super.version,
     super.errorCorrectionLevel,
     super.errorStateBuilder = _defaultQrErrorBuilder,
