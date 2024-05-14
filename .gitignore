@@ -28,6 +28,7 @@
 .android/
 .ios/
 .flutter-plugins
+analysis_options.yaml
 .flutter-plugins-dependencies
 .packages
 .pub-cache/
