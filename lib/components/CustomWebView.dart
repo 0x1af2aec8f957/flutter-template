@@ -30,7 +30,7 @@ const allowRequestSchemes = [ // 允许 webview 跳转的链接，不允许处�
 ];
 
 class CustomWebView extends StatefulWidget {
-  final String? url;
+  final Uri url;
   final WebViewCreatedCallback? onWebViewCreated;
 
   // 自定义扩展事件，不需要依赖对接WEB才能完成的操作
@@ -40,7 +40,7 @@ class CustomWebView extends StatefulWidget {
 
   CustomWebView({
     super.key,
-    this.url,
+    required this.url,
     this.onWebViewCreated,
     this.onLifecycleStateChange,
     this.onPageDOMContentChangeCallback,
@@ -175,7 +175,7 @@ class _CustomWebView extends State<CustomWebView> {
         if (await canLaunchUrl(Uri.parse(message.message))) launchUrl(Uri.parse(message.message)); // canLaunchUrl 需要额外的权限描述：https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher#configuration
       })
       ..addJavaScriptChannel('openWebView', onMessageReceived: (message) { // 打开全屏 webview
-        FullScreenWebView.open(context, url: message.message);
+        FullScreenWebView.open(context, url: Uri.parse(message.message));
       })
       ..addJavaScriptChannel('openNativeView', onMessageReceived: (message) { // 打开主程序 view
         context.push<void>(message.message);
@@ -208,9 +208,8 @@ class _CustomWebView extends State<CustomWebView> {
     }
 
     widget.onWebViewCreated?.call(controller);
-    if (widget.url == null) return;
 
-    final Uri uri = Uri.parse(widget.url!);
+    final Uri uri = widget.url;
     final bool isValidAbsoluteUrl = uri.isAbsolute;
     final bool isValidFileUrl = !isValidAbsoluteUrl || uri.isScheme('FILE');
     final bool isValidAssetUrl = isValidFileUrl && uri.path.startsWith('assets/');

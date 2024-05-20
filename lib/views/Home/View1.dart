@@ -17,7 +17,7 @@ class View1 extends StatelessWidget{
         return Container(
           alignment: Alignment.center,
           child: GestureDetector(
-            onTap: () => FullScreenWebView.open(context, url: 'https://www.baidu.com'),
+            onTap: () => FullScreenWebView.open(context, url: Uri.https('www.baidu.com')),
             child: Text(e, textScaler: TextScaler.linear(5))
           ),
         );

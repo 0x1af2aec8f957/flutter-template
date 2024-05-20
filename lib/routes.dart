@@ -16,6 +16,7 @@ import './views/FullScreen.dart';
 import './views/LoadingJson.dart';
 import './views/ApplicationDir.dart';
 import './views/CustomCachedNetworkImage.dart';
+import './views/WebView.dart';
 
 final routes = [
   /* GoRoute(
@@ -50,6 +51,10 @@ final routes = [
   GoRoute(
     path: '/language',
     builder: (context, state) => Language(title: '语言设置'),
+  ),
+  GoRoute(
+    path: '/webView',
+    builder: (context, state) => WebView(src: state.uri.queryParameters['url']!),
   ),
   GoRoute(
     path: '/example',

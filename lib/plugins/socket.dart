@@ -19,6 +19,8 @@ class CustomSocketClient {
   factory CustomSocketClient() => _instance;
   static late final CustomSocketClient _instance = CustomSocketClient._internal();
 
+  get isConnected => socket?.readyState == WebSocket.open;
+
   Future<void> _init([bool isReset = false]) {
     return SharedPreferences.getInstance().then((prefs) => WebSocket.connect(
       _wsUrl.toString(),

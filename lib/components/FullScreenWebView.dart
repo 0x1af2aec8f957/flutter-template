@@ -7,7 +7,7 @@ import './CustomWebview.dart';
 /// 带控制按钮的全屏 webview 组件
 
 class FullScreenWebView extends StatefulWidget {
-  final String url;
+  final Uri url;
   final double iconSize = 18;
   final double marginSize = 10;
   const FullScreenWebView(this.url, {super.key});
@@ -15,7 +15,7 @@ class FullScreenWebView extends StatefulWidget {
   @override
   _FullScreenWebView createState() => _FullScreenWebView();
 
-  static Future<void> open(BuildContext context, {required String url}) => Navigator.of(context).push(PageRouteBuilder( // 打开 webview
+  static Future<void> open(BuildContext context, {required Uri url}) => Navigator.of(context).push(PageRouteBuilder( // 打开 webview
     pageBuilder: (context, animation, secondaryAnimation) => FullScreenWebView(url),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0, 1);

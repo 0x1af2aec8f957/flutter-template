@@ -137,7 +137,7 @@ class CustomFileActionButton extends StatelessWidget {
         title: Text(title ?? '文件预览'),
         // actions: [],
       ),
-      body: CustomWebView(url: Platform.isAndroid ? 'https://file.kkview.cn/onlinePreview?url=${Uri.encodeComponent(filePath.parseToBase64)}' : filePath), // Android 使用 kkfileview 预览（https://kkfileview.keking.cn/zh-cn/docs/home.html），iOS 直接使用 WKWebview 即可预览
+      body: CustomWebView(url: Uri.parse(Platform.isAndroid ? 'https://file.kkview.cn/onlinePreview?url=${Uri.encodeComponent(filePath.parseToBase64)}' : filePath)), // Android 使用 kkfileview 预览（https://kkfileview.keking.cn/zh-cn/docs/home.html），iOS 直接使用 WKWebview 即可预览
     ),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0, 1);
