@@ -88,7 +88,7 @@ extension MapHelper on Map {
 
 extension ListHelper on List {
   String get parseToString => json.encode(this); // 转换为 jsonString
-  void sortToASCII() => sort((prev, cur) => compareAsciiUpperCase(prev, cur)); // 按照 ASCII 排序
+  void sortToASCII() => sort((prev, cur) => compareAsciiUpperCase(PinyinHelper.getShortPinyin(prev), PinyinHelper.getShortPinyin(cur))); // 按照 ASCII 排序
 }
 
 extension NullHelper on Null {
