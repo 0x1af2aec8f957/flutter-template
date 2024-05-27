@@ -6,7 +6,7 @@ import 'package:crypto/crypto.dart' show Digest, md5;
 import 'package:lpinyin/lpinyin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show MethodChannel, Clipboard, ClipboardData;
-import "package:collection/collection.dart";
+import "package:collection/collection.dart" as collection;
 
 import './constant.dart';
 import '../setup/router.dart';
@@ -59,6 +59,8 @@ extension StringHelper on String {
       return false;
     }
   }
+
+  int compareAsciiUpperCase(String str) => collection.compareAsciiUpperCase(PinyinHelper.getShortPinyin(this), PinyinHelper.getShortPinyin(str)); // 比较两个字符串的 ASCII 大小
 }
 
 extension NumberHelper on num {
@@ -88,7 +90,7 @@ extension MapHelper on Map {
 
 extension ListHelper on List {
   String get parseToString => json.encode(this); // 转换为 jsonString
-  void sortToASCII() => sort((prev, cur) => compareAsciiUpperCase(PinyinHelper.getShortPinyin(prev), PinyinHelper.getShortPinyin(cur))); // 按照 ASCII 排序
+  void sortToASCII() => sort((prev, cur) => prev.compareAsciiUpperCase(cur)); // 按照 ASCII 排序
 }
 
 extension NullHelper on Null {
