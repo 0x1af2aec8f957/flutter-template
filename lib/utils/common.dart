@@ -41,6 +41,9 @@ extension StringHelper on String {
   static String get placeholder => stringPlaceholder; // 字符串占位符
 
   String get pinyin => PinyinHelper.getPinyinE(this, separator: " ", defPinyin: '#'); // 获取汉字拼音，不支持转换的会使用 # 返回
+  String get shortPinyin => PinyinHelper.getShortPinyin(this); // 获取汉字拼音首字母组合
+  String get firstWordPinyin => PinyinHelper.getFirstWordPinyin(this); // 获取汉字拼音首字母
+
   Future<void> copyWithClipboard() => ClipboardHelper.copy(this); // 复制到粘贴板
 
   bool get isNumber => num.tryParse(this) != null; // 是否是数字
@@ -60,7 +63,7 @@ extension StringHelper on String {
     }
   }
 
-  int compareAsciiUpperCase(String str) => collection.compareAsciiUpperCase(PinyinHelper.getShortPinyin(this), PinyinHelper.getShortPinyin(str)); // 比较两个字符串的 ASCII 大小
+  int compareAsciiUpperCase(String str) => collection.compareAsciiUpperCase(this.shortPinyin, str.shortPinyin); // 比较两个字符串的 ASCII 大小
 }
 
 extension NumberHelper on num {
