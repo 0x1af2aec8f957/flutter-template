@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart' show MethodCall;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../routes.dart';
 import '../lang/i18n.dart';
@@ -26,6 +27,7 @@ final router = GoRouter(
       return null;
     }
   }, */
+  // redirect: (BuildContext context, GoRouterState state) => SharedPreferences.getInstance().then((prefs) => prefs.getString('token') == null ? '/login' : null), // token 不存在则跳转到登录页
 );
 
 class RouterObserver extends NavigatorObserver {
