@@ -27,7 +27,10 @@ final router = GoRouter(
       return null;
     }
   }, */
-  // redirect: (BuildContext context, GoRouterState state) => SharedPreferences.getInstance().then((prefs) => prefs.getString('token') == null ? '/login' : null), // token 不存在则跳转到登录页
+  /* redirect: (BuildContext context, GoRouterState state) { // token 不存在则跳转到登录页
+    if (state.uri.path.startsWith('/register')) return null; // 注册页不需要 token
+    return SharedPreferences.getInstance().then((prefs) => prefs.getString('token') == null ? '/login' : null);
+  }, */
 );
 
 class RouterObserver extends NavigatorObserver {
