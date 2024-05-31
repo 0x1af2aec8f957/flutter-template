@@ -1,0 +1,53 @@
+# doc: https://docs.gitlab.com/ee/ci/quick_start/tutorial.html
+stages: # List of stages for jobs and their order of execution
+  - build
+  - release
+
+build-job:
+  stage: build # Set this job to run in the `build` stage
+  image: cirrusci/flutter:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - flutter pub get
+    - flutter build apk --release --obfuscate --split-debug-info=build/app/outputs/symbols
+    - flutter build ios --release --no-codesign --obfuscate --split-debug-info=build/ios/iphoneos/symbols
+    - mkdir -p ./build/ios/iphoneos/Payload
+    - mv -f ./build/ios/iphoneos/Runner.app ./build/ios/iphoneos/Payload
+    - cd ./build/ios/iphoneos && zip -m -r ./app-release.ipa ./Payload && cd -
+  artifacts:
+    paths:
+      - "./build/app/outputs/flutter-apk/app-release.apk"
+      - "./build/ios/iphoneos/app-release.ipa"
+
+release-job:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  # dependencies:
+  #   - job: build-job
+  needs:
+    - job: build-job
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG  # Run this job when a tag is created
+  script:
+    - echo "Running release-job"
+    # - printenv # 查看所有环境变量
+  release:
+    name: 'Release $TAG'
+    description: '$CI_COMMIT_TAG'
+    # description: 'Created using the release-cli $EXTRA_DESCRIPTION' # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
+    tag_name: '$CI_COMMIT_TAG'
+    ref: '$CI_COMMIT_SHA'
+    # milestones: # $CI_PROJECT_URL/-/milestones
+    #   - 'm1'
+    #   - 'm2'
+    #   - 'm3'
+    assets:
+      links:
+        - name: "Android"
+          # url: "$CI_JOB_URL/artifacts/download" # 工件下载文档：https://docs.gitlab.com/ee/ci/jobs/job_artifacts.html#from-a-url-1
+          # filepath: "/app-release.apk" # 工件浏览：$CI_PROJECT_URL/-/jobs/$JOB_ID/artifacts/browse
+          url: $CI_PROJECT_URL/-/jobs/$[CI_JOB_ID-1]/artifacts/raw/build/app/outputs/flutter-apk/app-release.apk
+        - name: "iOS"
+          url: $CI_PROJECT_URL/-/jobs/$[CI_JOB_ID-1]/artifacts/raw/build/ios/iphoneos/app-release.ipa
