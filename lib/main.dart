@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 // import 'package:dart_ping_ios/dart_ping_ios.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_screenutil/flutter_screenutil.dart'; // https://github.com/OpenFlutter/flutter_screenutil
@@ -161,16 +161,17 @@ class _App extends State<App> {
 
   void checkSchema () { /// 检查是否是由 schema 启动，需要根据 uni_links 配置原生工程: https://pub.dev/packages/uni_links
     // schema example: example://example?userId=123
-      try {
-        getInitialUri().then(openSchemaUri); // 打开启动时的 uri
+    try {
+      final _appLinks = AppLinks();
+      _appLinks.getInitialLink().then(openSchemaUri); // 打开启动时的 schema-uri
 
-        schemaStream ??= uriLinkStream.listen(openSchemaUri,  onError: (err) { // 监听 schema-uri 并 打开热启动的 schema-uri
+      schemaStream ??= _appLinks.uriLinkStream.listen(openSchemaUri,  onError: (err) { // 监听 schema-uri 并 打开热启动的 schema-uri
           // Handle exception by warning the user their action did not succeed
           Talk.log(err.toString(), name: 'Schema 解析错误');
         });
-      } on FormatException {
-        // Talk.toast(I18n.$t('common', 'parseError'));
-        Talk.log('解析错误', name: 'Schema 协议');
-      }
+    } on FormatException {
+      // Talk.toast(I18n.$t('common', 'parseError'));
+      Talk.log('解析错误', name: 'Schema 协议');
+    }
   }
 }
