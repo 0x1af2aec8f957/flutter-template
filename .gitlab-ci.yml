@@ -8,6 +8,10 @@ build-job:
   image: cirrusci/flutter:latest
   rules:
     - if: $CI_COMMIT_TAG
+  before_script:
+    - flutter --version
+    - flutter clean
+    # - printenv # 查看所有环境变量
   script:
     - flutter pub get
     - flutter build apk --release --obfuscate --split-debug-info=build/app/outputs/symbols
@@ -30,14 +34,16 @@ release-job:
       artifacts: true
   rules:
     - if: $CI_COMMIT_TAG  # Run this job when a tag is created
+  # before_script:
+    # - printenv # 查看所有环境变量
   script:
     - echo "Running release-job"
-    # - printenv # 查看所有环境变量
   release:
-    name: 'Release $TAG'
-    description: '$CI_COMMIT_TAG'
+    name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_MESSAGE'
     # description: 'Created using the release-cli $EXTRA_DESCRIPTION' # See https://docs.gitlab.com/ee/ci/yaml/#release for available properties
     tag_name: '$CI_COMMIT_TAG'
+    tag_message: '$CI_COMMIT_TAG_MESSAGE'
     ref: '$CI_COMMIT_SHA'
     # milestones: # $CI_PROJECT_URL/-/milestones
     #   - 'm1'
